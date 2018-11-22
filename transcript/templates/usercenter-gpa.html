@@ -1,0 +1,77 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}My course {% endblock %}
+{% load staticfiles %}
+
+{% block head %}
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+{% endblock %}
+{% block custom_bread %}
+        <section>
+        <div class="wp">
+            <ul  class="crumbs">
+
+                <li><a href="">student center</a>></li>
+                <li>student gpa</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block right_content %}
+    <div class="right">
+		<div class="personal_des ">
+			<div class="head" style="border:1px solid #eaeaea;">
+				<h1>GPA Information</h1>
+			</div>
+			<div class="inforcon">
+
+				<form class="perinform" id="jsEditUserForm" autocomplete="off">
+                    <table>
+                        <tr>
+                            <th>Semester</th>
+                            <th>GPA</th>
+                        </tr>
+                        <tr>
+                            <th>Total GPA</th>
+                            <th>{{ total_GPA }}</th>
+                        </tr>
+                        <tr>
+                            <th>2018 Summer</th>
+                            <th>{{ summer_GPA }}</th>
+                        </tr>
+                        <tr>
+                            <th>2018 Fall</th>
+                            <th>{{ fall_GPA }}</th>
+                        </tr>
+                        <tr>
+                            <th>2018 winter</th>
+                            <th>{{ winter_GPA }}</th>
+                        </tr>
+                    </table>
+                    <br>
+
+                    <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+                    <a href="{% url 'transcript' %}">Print Transcript</a>
+				</form>
+                {% csrf_token %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

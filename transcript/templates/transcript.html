@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transcript</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 70%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">University of Windsor</h1>
+    <h3>Department: {{ student.degree }}</h3>
+    <h3>Student Name: {{ student.username }}</h3>
+    <br>
+
+    <center>
+        <h3>2018 Summer Term</h3>
+        <table>
+            <tr>
+                <th>Course No.</th>
+                <th>Course Name</th>
+                <th>Course Hour(h)</th>
+                <th>Grade</th>
+            </tr>
+            {% for course in summer_courses %}
+                <tr>
+                    <td>{{ course.Course.Course_ID }}</td>
+                    <td>{{ course.Course.Course_Name }}</td>
+                    <td>{{ course.Course.Course_Hour }}</td>
+                    <td>{{ course.Grade }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4" rowspan="2">
+                    <em>Grade Point Average(GPA):&nbsp&nbsp&nbsp&nbsp {{ summer_agpa }}</em>
+                    <pre></pre>
+                    <em>Cumulative Grade Point Average(CGPA):&nbsp&nbsp&nbsp&nbsp {{ summerGPA }}</em>
+                </td>
+            </tr>
+        </table>
+    </center>
+
+    <center>
+        <h3>2018 Fall Term</h3>
+        <table>
+            <tr>
+                <th>Course No.</th>
+                <th>Course Name</th>
+                <th>Course Hour(h)</th>
+                <th>Grade</th>
+            </tr>
+            {% for course in fall_courses %}
+                <tr>
+                    <td>{{ course.Course.Course_ID }}</td>
+                    <td>{{ course.Course.Course_Name }}</td>
+                    <td>{{ course.Course.Course_Hour }}</td>
+                    <td>{{ course.Grade }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4" rowspan="2">
+                    <em>Grade Point Average(GPA):&nbsp&nbsp&nbsp&nbsp {{ fall_agpa }}</em>
+                    <pre></pre>
+                    <em>Cumulative Grade Point Average(CGPA):&nbsp&nbsp&nbsp&nbsp {{ fallGPA }}</em>
+                </td>
+            </tr>
+        </table>
+    </center>
+
+    <center>
+        <h3>2018 Winter Term</h3>
+        <table>
+            <tr>
+                <th>Course No.</th>
+                <th>Course Name</th>
+                <th>Course Hour(h)</th>
+                <th>Grade</th>
+            </tr>
+            {% for course in winter_courses %}
+                <tr>
+                    <td>{{ course.Course.Course_ID }}</td>
+                    <td>{{ course.Course.Course_Name }}</td>
+                    <td>{{ course.Course.Course_Hour }}</td>
+                    <td>{{ course.Grade }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4" rowspan="2">
+                    <em>Grade Point Average(GPA):&nbsp&nbsp&nbsp&nbsp {{ winter_agpa }}</em>
+                    <pre></pre>
+                    <em>Cumulative Grade Point Average(CGPA):&nbsp&nbsp&nbsp&nbsp {{ winterGPA }}</em>
+                </td>
+            </tr>
+        </table>
+    </center>
+
+</body>
+</html>
