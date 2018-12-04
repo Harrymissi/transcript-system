@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 import xadmin
 from django.views.generic import TemplateView
-from trans_sys.views import user_login, user_info, user_course, user_GPA, user_transcript
+from trans_sys.views import user_login, user_info, user_course, user_GPA, user_transcript, changeProfile, change_password
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
@@ -26,5 +26,7 @@ urlpatterns = [
     path('info/',user_info,name="info"),
     path('course/',user_course,name="course"),
     path('gpa/', user_GPA, name="gpa"),
-    path('transcript/', user_transcript, name="transcript")
+    path('transcript/', user_transcript, name="transcript"),
+    path('changeProfile', changeProfile, name="changeProfile"),
+    path('changePWD', change_password, name="changePWD" ),
 ]

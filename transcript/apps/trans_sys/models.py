@@ -1,12 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django_countries.fields import CountryField
 # Create your models here.
 
 class Degree(models.Model):
     degree_id = models.CharField(max_length=9, verbose_name='Degree ID', primary_key=True)
-    degree = models.CharField(max_length=20,
-                              choices=(('cs', 'COMPUTER SCIENCE'), ('mac', 'MASTER OF APPLIED COMPUTING')),
-                              default='mac')
+    degree = models.CharField(max_length=20,default='mac')
 
     class Meta:
         verbose_name = 'Degree'
@@ -32,13 +31,12 @@ class Student(AbstractUser):
     Address = models.CharField(max_length=50, null=True, blank=True)
     City = models.CharField(max_length=10, null=True, blank=True)
     Province = models.CharField(max_length=10, null=True, blank=True)
-    Country = models.CharField(max_length=10, null=True, blank=True)
+    Country = CountryField()
     Postal = models.CharField(max_length=10, null=True, blank=True)
-    Citizenship = models.CharField(max_length=10, choices=(('citizen','CITIZEN'), ('temp-study','TEMPORARY STUDENT')))
     Gender = models.CharField(max_length=6, choices=(('male','MALE'),('female','FEMALE')))
     Phone = models.CharField(max_length=12, null=True, blank=True)
     GPA = models.IntegerField(null=True, blank=True)
-    degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
+    degree = models.ForeignKey(Degree, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Student Infomation'

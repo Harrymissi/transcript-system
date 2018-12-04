@@ -14,8 +14,7 @@
 
     <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}" type="text/javascript"></script>
-
-    {% block head %}{% endblock %}
+     {% block head %}{% endblock %}
     {% block custom_css %}
     {% endblock %}
 </head>
@@ -80,6 +79,7 @@
             <ul>
                 <li class="{% ifequal current_page "info" %}active2{% endifequal %}"><a href="{% url 'info' %}">Student
                     Infomation</a></li>
+
                 <li class="{% ifequal current_page "course" %}active2{% endifequal %}"><a href="{% url 'course' %}">My
                     Course</a></li>
                 <li class="{% ifequal current_page "gpa" %}active2{% endifequal %}"><a href="{% url 'gpa' %}">My

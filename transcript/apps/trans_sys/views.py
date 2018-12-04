@@ -1,8 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from  django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import authenticate,login
+from django.views.generic.base import View
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 
 from .models import Student, Semester, Course, Register, Degree
+from .forms import ChangeForm
 # Create your views here.
 
 class CustomBackend(ModelBackend):
@@ -90,7 +95,7 @@ def user_GPA(request):
         winter_GPA = totalGPA[2] / totalHour[2]
 
         return render(request, 'usercenter-gpa.html', {
-            'total_GPA': stu_GPA,
+            'total_GPA': round(stu_GPA,2),
             'summer_GPA': summer_GPA,
             'fall_GPA': fall_GPA,
             'winter_GPA': winter_GPA,
@@ -129,9 +134,9 @@ def user_transcript(request):
         winterGPA = (totalGPA[0] + totalGPA[1] + totalGPA[2]) / (totalHour[0] + totalHour[1] + totalHour[2])
 
         return render(request, 'transcript.html', {
-            'summerGPA': summerGPA,
-            'fallGPA': fallGPA,
-            'winterGPA': winterGPA,
+            'summerGPA': round(summerGPA, 2),
+            'fallGPA': round(fallGPA,2),
+            'winterGPA': round(winterGPA,2),
             'student': student,
             'summer_courses': summerCourse,
             'fall_courses': fallCourse,
@@ -141,5 +146,88 @@ def user_transcript(request):
             'winter_agpa': totalGPA[2] / totalHour[2]
         })
 
+def changeProfile(request):
+    if request.method == "POST":
+        user_address = request.POST.get("address","")
+        user_email = request.POST.get("email","")
+
+        student = Student.objects.get(id = int(request.user.id))
+        student.email = user_email
+        student.Address = user_address
+        student.save()
+
+        return render(request, 'usercenter-info.html')
+
+    if request.method == "GET":
+        stu_id = request.user.id
+        student = Student.objects.get(id=int(stu_id))
+        current_page = "info"
+        return render(request, "usercenter-info.html", {
+            "student": student,
+            "current_page": current_page
+        })
 
 
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('login')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'forget_psw.html', {
+        'form': form
+    })
+
+# def regester_courses(request):
+#     if request.method == 'POST':
+#         user = Student.objects.get(id = request.user.id)
+#         semester = request.POST.get("type1", "")
+#         semester_obj = Semester.objects.get(semester_Name= semester)
+#         degree_obj = Degree.objects.get(degree_id=user.degree.degree_id)
+#
+#         unregestered_courses = Course.objects.filter(Semester=semester_obj).filter(Degree=degree_obj).exclude(register__student=request.user)  # 学生没有注册的课程
+#
+#         return render(request, 'usercenter-register_courseList.html', {
+#             "courses": unregestered_courses,
+#             "current_page": "course_register"
+#         })
+#     else:
+#         return render(request, 'usercenter-register_semester.html', {
+#             "current_page": "course_register"
+#         })
+#
+#
+# def self_register(request):
+#     if request.method == 'POST':
+#         user = Student.objects.get(id=request.user.id)
+#         course_name =  request.POST.get("course", "")
+#         course_obj = Course.objects.get(Course_Name=course_name)
+#
+#         regestering_course = Register()
+#         regestering_course.Course = course_obj
+#         regestering_course.student = user
+#         regestering_course.save()
+#
+#
+#         semester = request.POST.get("type1", "")
+#         semester_obj = Semester.objects.get(semester_Name=semester)
+#         degree_obj = Degree.objects.get(degree_id=user.degree.degree_id)
+#
+#         unregestered_courses = Course.objects.filter(Semester=semester_obj).filter(Degree=degree_obj).exclude(
+#             register__student=request.user)
+#
+#         return render(request, 'usercenter-register_courseList.html', {
+#             "courses": unregestered_courses,
+#             "current_page": "course_register"
+#         })
+#
+#     else:
+#         return render(request, 'usercenter-register_courseList.html', {
+#             "current_page": "course_register"
+#         })
